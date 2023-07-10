@@ -1,0 +1,26 @@
+span.objective {
+  background-color: #eee;
+  color: blue;
+  cursor: pointer;
+}
+
+#choice {
+  display: none;
+  background-color: white;
+  border: 1px solid black;
+  position: absolute;
+}
+
+#output {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  width: 500px;
+  padding: 10px;
+  border: 2px solid gray;
+}
+
+#testresults {
+  overflow: scroll;
+}
+
