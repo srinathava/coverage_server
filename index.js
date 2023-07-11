@@ -23,6 +23,29 @@ app.get('/file/*', async (req, res) => {
   res.json(data);
 });
 
+async function* walkdir(dirname) {
+  const workvec = [await fs.opendir(dirname)];
+  while (workvec.length > 0) {
+    const curd = workvec.pop();
+    for await (const dirent of curd.entries()) {
+      yield dirent;
+      if (dirent.isDirectory()) {
+        workvec.push(await fs.opendir(dirent.path));
+      }
+    }
+  }
+}
+
+app.get('/dir', async (req, res) => {
+  let entries = [];
+  for await (const entry of walkdir(COV_DATA_DIR)) {
+    if (entry.path.endsWith('cpp')) {
+      entries.push(entry.path.slice(COV_DATA_DIR.length+1));
+    }
+  }
+  res.json(entries);
+});
+
 let jobInfo = null;
 
 async function getJobInfo() {
